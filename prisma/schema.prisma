@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Pipeline {
+  id         Int            @id @default(autoincrement())
+  name       String
+  project    String
+  status     PipelineStatus @default(IDLE)
+  platform   Platform
+  project_id String
+
+  configurations PipelineConfiguration[]
+  Run            Run[]
+}
+
+model PipelineConfiguration {
+  id     Int      @id @default(autoincrement())
+  config String
+  date   DateTime @default(now())
+
+  pipeline   Pipeline @relation(fields: [pipelineId], references: [id])
+  pipelineId Int
+  Run        Run[]
+}
+
+model Run {
+  id       Int       @id @default(autoincrement())
+  name     String
+  date     DateTime  @default(now())
+  status   RunStatus @default(RUNNING)
+  output   String
+  platform Platform
+
+  pipeline                Pipeline              @relation(fields: [pipelineId], references: [id])
+  pipelineId              Int
+  config                  PipelineConfiguration @relation(fields: [pipelineConfigurationId], references: [id])
+  pipelineConfigurationId Int
+  RunArtifacts            RunArtifacts[]
+}
+
+model Artifact {
+  id    Int          @id @default(autoincrement())
+  name  String
+  date  DateTime     @default(now())
+  url   String
+  type  ArtifactType
+  model Artifact     @relation("generated_by_artifact", fields: [artifactId], references: [id])
+
+  RunArtifacts RunArtifacts[]
+  Artifact     Artifact[]     @relation("generated_by_artifact")
+  artifactId   Int
+}
+
+model RunArtifacts {
+  run              Run      @relation(fields: [runId], references: [id])
+  runId            Int
+  artifact         Artifact @relation(fields: [artifactId], references: [id])
+  artifactId       Int
+  generated_by_run Boolean
+
+  @@id([runId, artifactId])
+}
+
+enum RunStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+enum Platform {
+  AZURE
+  GOOGLE
+  AWS
+}
+
+enum ArtifactType {
+  DATASET
+  MODEL
+}
+
+enum PipelineStatus {
+  IDLE
+  RUNNING
+  ERROR
+}
