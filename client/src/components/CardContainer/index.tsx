@@ -10,7 +10,6 @@ const CardContainer: React.FC<CardContainerProps> = props => {
 			borderColor='rgba(0, 0, 0, .12)'
 			borderRadius={15}
 			p='24px'
-			mb='24px'
 			{...props}
 		>
 			{props.children}

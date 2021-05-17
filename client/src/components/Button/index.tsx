@@ -13,6 +13,7 @@ const Button: React.FC<ButtonProps> = (props): JSX.Element => {
 			disableElevation
 			{...props}
 			style={{ fontWeight: 'bold' }}
+			disabled={disabled}
 		>
 			{children}
 		</MuiButton>

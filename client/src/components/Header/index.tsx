@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = props => {
 	const { backUrl, title, subtitle, buttons } = props
 
 	return (
-		<CardContainer component='header'>
+		<CardContainer component='header' style={{ marginBottom: '24px' }}>
 			<Box display='flex' alignItems='center' height='36px'>
 				{backUrl && (
 					<Box mr='12px'>
