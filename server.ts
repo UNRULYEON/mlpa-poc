@@ -12,7 +12,6 @@ app.get("/*", (req, res) => {
 
 app.get("/health", (_, res) => res.sendStatus(200));
 
-
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
