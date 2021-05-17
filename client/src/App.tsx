@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
 import PipelinesPage from './pages/pipelines'
+import PipelineDetailsPage from './pages/pipeline-details'
 import './App.css'
-import { useSetRecoilState } from 'recoil'
 
 function App() {
 	return (
@@ -13,7 +12,9 @@ function App() {
 					<Route path='/pipeline/:pipeline/run/:run'>
 						pipeline run details
 					</Route>
-					<Route path='/pipeline/:pipeline'>pipeline details</Route>
+					<Route path='/pipeline/:pipeline'>
+						<PipelineDetailsPage />
+					</Route>
 					<Route path='/'>
 						<PipelinesPage />
 					</Route>
