@@ -1,1 +1,1 @@
-export { fetchPipeline, fetchPipelines } from './pipeline.service'
+export { fetchPipeline, fetchPipelines, createPipeline } from './pipeline.service'

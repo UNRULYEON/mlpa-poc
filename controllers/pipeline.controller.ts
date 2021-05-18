@@ -1,5 +1,6 @@
+import { DTO_CreatePipeline } from 'DTO/pipeline'
 import { Request, Response, NextFunction } from 'express'
-import { fetchPipeline, fetchPipelines } from '../services'
+import { fetchPipeline, fetchPipelines, createPipeline } from '../services'
 
 type RouteFunction = (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>
 
@@ -26,4 +27,12 @@ export const getPipelines: RouteFunction = async (req, res, next) => {
   } catch (e) {
     return res.status(500).json(e)
   }
+}
+
+export const postPipeline: RouteFunction = async (req, res, next) => {
+  const data: DTO_CreatePipeline = req.body
+
+  const pipeline = await createPipeline(data)
+
+  return res.status(201).json(pipeline)
 }

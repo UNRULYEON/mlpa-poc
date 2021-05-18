@@ -5,6 +5,7 @@ import {
 	WithStyles
 } from '@material-ui/core/styles'
 import { Dialog as MuiDialog } from '@material-ui/core'
+import { DialogProps as MuiDialogProps } from '@material-ui/core/Dialog'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
 import MuiDialogContent from '@material-ui/core/DialogContent'
 import MuiDialogActions from '@material-ui/core/DialogActions'
@@ -68,17 +69,15 @@ type DialogProps = {
 	title: string
 	buttons: () => JSX.Element
 	close: () => void
-}
+} & MuiDialogProps
 
 const Dialog: React.FC<DialogProps> = props => {
-	const { open, title, buttons, close, children } = props
+	const { title, buttons, close, children } = props
 
-	const handleClose = () => {
-		close()
-	}
+	const handleClose = () => close()
 
 	return (
-		<MuiDialog onClose={handleClose} aria-labelledby='dialog-title' open={open}>
+		<MuiDialog onClose={handleClose} aria-labelledby='dialog-title' {...props}>
 			<DialogTitle id='dialog-title' onClose={handleClose}>
 				{title}
 			</DialogTitle>

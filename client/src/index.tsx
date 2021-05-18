@@ -6,6 +6,7 @@ import { SWRConfig } from 'swr'
 import { RecoilRoot } from 'recoil'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { ThemeProvider } from '@material-ui/styles'
+import { SnackbarProvider } from 'notistack'
 import theme from './theme'
 import reportWebVitals from './reportWebVitals'
 
@@ -46,10 +47,12 @@ ReactDOM.render(
 			}}
 		>
 			<RecoilRoot>
-				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<App />
-				</ThemeProvider>
+				<SnackbarProvider>
+					<ThemeProvider theme={theme}>
+						<CssBaseline />
+						<App />
+					</ThemeProvider>
+				</SnackbarProvider>
 			</RecoilRoot>
 		</SWRConfig>
 	</React.StrictMode>,
