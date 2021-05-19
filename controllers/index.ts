@@ -1,1 +1,1 @@
-export { getPipeline, getPipelines, postPipeline } from './pipeline.controller'
+export { getPipeline, getPipelines, postPipeline, getPipelineStatus, getPipelineConfigurationStatus } from './pipeline.controller'

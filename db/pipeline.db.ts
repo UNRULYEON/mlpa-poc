@@ -24,3 +24,27 @@ export const createPipelineInDb = async (data: DTO_CreatePipeline) => {
     }
   })
 }
+
+export const pipelineStatus = async (id: number) => {
+  return await prisma.pipeline.findUnique({
+    where: {
+      id: id
+    },
+    select: {
+      status: true,
+      Run: {
+        orderBy: [
+          {
+            date: 'desc'
+          }
+        ],
+        take: 1,
+        select: {
+          id: true,
+          date: true
+        }
+      },
+      platform: true,
+    }
+  })
+}

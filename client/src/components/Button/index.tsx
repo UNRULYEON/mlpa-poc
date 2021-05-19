@@ -11,9 +11,9 @@ const Button: React.FC<ButtonProps> = (props): JSX.Element => {
 			variant='contained'
 			color='primary'
 			disableElevation
-			{...props}
 			style={{ fontWeight: 'bold' }}
 			disabled={disabled}
+			{...props}
 		>
 			{children}
 		</MuiButton>

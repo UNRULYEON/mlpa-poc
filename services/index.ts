@@ -1,1 +1,1 @@
-export { fetchPipeline, fetchPipelines, createPipeline } from './pipeline.service'
+export { fetchPipeline, fetchPipelines, createPipeline, fetchPipelineStatus, fetchPipelineConfigurationStatus } from './pipeline.service'

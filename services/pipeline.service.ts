@@ -1,7 +1,7 @@
 import { DTO_CreatePipeline } from "DTO/pipeline"
 import { storage } from '@pulumi/gcp'
 import { LocalWorkspace } from "@pulumi/pulumi/automation"
-import { pipeline, pipelines, createPipelineInDb } from "../db"
+import { pipeline, pipelines, createPipelineInDb, pipelineStatus, configurationStatus } from "../db"
 import { azure_createBucket } from './azure.service'
 import { gc_createBucket } from './gc.service'
 
@@ -40,6 +40,22 @@ export const createPipeline = async (data: DTO_CreatePipeline) => {
     const stack = await project_stack.up()
 
     return pipeline
+  } catch (e) {
+    throw new Error(e)
+  }
+}
+
+export const fetchPipelineStatus = async (id: number) => {
+  try {
+    return await pipelineStatus(id)
+  } catch (e) {
+    throw new Error(e)
+  }
+}
+
+export const fetchPipelineConfigurationStatus = async (id: number) => {
+  try {
+    return await configurationStatus(id)
   } catch (e) {
     throw new Error(e)
   }
