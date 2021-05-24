@@ -24,6 +24,11 @@ export type DTO_PipelineConfigurationStatus = {
   date: string
 }
 
+export type DTO_PipelineDatasetsAndArtifactsStatus = {
+  deployed: boolean
+  endpoint: string
+}
+
 export type Platform = 'AZURE' | 'GOOGLE'
 
 export type PipelineStatus = 'IDLE' | 'RUNNING' | 'ERROR'

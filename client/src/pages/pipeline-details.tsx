@@ -1,7 +1,6 @@
 import { useParams } from 'react-router'
 import useSWR from 'swr'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
 import Header from '../components/Header'
 import { DTO_PipelineDetails } from '../../../DTO/pipeline'
 import PipelineDetailsCard from '../components/PipelineDetailsCard'
@@ -36,12 +35,12 @@ const PipelineDetailsPage = () => {
 							</Grid>
 							<Grid container spacing={3}>
 								<Grid item xs>
-									<RunsCard />
+									<RunsCard id={pipeline} />
 								</Grid>
 							</Grid>
 						</Grid>
 						<Grid item xs={4}>
-							<DatasetsAndArtifactsCard />
+							<DatasetsAndArtifactsCard id={pipeline} />
 						</Grid>
 					</Grid>
 				</>

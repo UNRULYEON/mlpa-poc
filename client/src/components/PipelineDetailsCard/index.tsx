@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import CardContainer from '../CardContainer'
 import CardHeader from '../CardHeader'
 import CardStatusTable from '../CardStatusTable'
@@ -52,7 +53,11 @@ const PipelineDetailsCard = (props: PipelineDetailsCardProps) => {
 					</Button>
 				)}
 			/>
-			{data && (
+			{!data ? (
+				<>
+					<CircularProgress />
+				</>
+			) : (
 				<CardStatusTable
 					table={[
 						{

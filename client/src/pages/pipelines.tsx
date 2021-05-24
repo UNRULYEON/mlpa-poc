@@ -177,18 +177,28 @@ const PipelinesPage = () => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{data.map((pipeline, key) => (
-								<TableRow
-									hover
-									onClick={() => history.push(`/pipeline/${pipeline.id}`)}
-									style={{ cursor: 'pointer' }}
-									key={`${key}-${pipeline.name}`}
-								>
+							{data.length <= 0 ? (
+								<TableRow>
 									<TableCell component='th' scope='Name'>
-										{pipeline.name}
+										There are no pipeline. Create a new one.
 									</TableCell>
 								</TableRow>
-							))}
+							) : (
+								<>
+									{data.map((pipeline, key) => (
+										<TableRow
+											hover
+											onClick={() => history.push(`/pipeline/${pipeline.id}`)}
+											style={{ cursor: 'pointer' }}
+											key={`${key}-${pipeline.name}`}
+										>
+											<TableCell component='th' scope='Name'>
+												{pipeline.name}
+											</TableCell>
+										</TableRow>
+									))}
+								</>
+							)}
 						</TableBody>
 					</Table>
 				)}

@@ -20,7 +20,7 @@ export const createPipelineInDb = async (data: DTO_CreatePipeline) => {
       name: data.name,
       project: data.project,
       platform: data.platform,
-      project_id: data.project_id,
+      project_id: data.project_id
     }
   })
 }
@@ -45,6 +45,14 @@ export const pipelineStatus = async (id: number) => {
         }
       },
       platform: true,
+    }
+  })
+}
+
+export const removePipeline = async (id: number) => {
+  return await prisma.pipeline.delete({
+    where: {
+      id: id
     }
   })
 }

@@ -1,8 +1,14 @@
 import { DTO_CreatePipeline, DTO_PipelineConfigurationStatus } from 'DTO/pipeline'
-import { Request, Response, NextFunction } from 'express'
-import { fetchPipeline, fetchPipelines, createPipeline, fetchPipelineStatus, fetchPipelineConfigurationStatus } from '../services'
-
-type RouteFunction = (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>
+import { RouteFunction } from './'
+import {
+  fetchPipeline,
+  fetchPipelines,
+  createPipeline,
+  fetchPipelineStatus,
+  fetchPipelineConfigurationStatus,
+  fetchPipelineArtifactsBucketStatus,
+  deletePipelineInDb
+} from '../services'
 
 export const getPipeline: RouteFunction = async (req, res, next) => {
   const id = Number(req.params.id)
@@ -67,6 +73,29 @@ export const getPipelineConfigurationStatus: RouteFunction = async (req, res) =>
     }
 
     res.json(payload)
+  } catch (e) {
+    return res.status(500).json(e)
+  }
+}
+
+export const getPipelineDatasetAndArtifactsStatus: RouteFunction = async (req, res) => {
+  const id = Number(req.params.id)
+
+  try {
+    const pipelineDatasetAndArtifactsStatus = await fetchPipelineArtifactsBucketStatus(id)
+
+    res.json(pipelineDatasetAndArtifactsStatus)
+  } catch (e) {
+    return res.status(500).json(e)
+  }
+}
+
+export const deletePipeline: RouteFunction = async (req, res) => {
+  const id = Number(req.params.id)
+
+  try {
+    await deletePipelineInDb(id)
+    return res.send(200)
   } catch (e) {
     return res.status(500).json(e)
   }
