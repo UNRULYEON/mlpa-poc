@@ -1,4 +1,5 @@
-import express from "express";
+import express from "express"
+import multer from 'multer'
 
 import {
   getPipeline,
@@ -9,10 +10,12 @@ import {
   getPipelineDatasetAndArtifactsStatus,
   deletePipeline,
   getRun,
-  getRuns
+  getRuns,
+  upload,
 } from '../controllers'
 
 const router = express.Router()
+const uploadMulter = multer({ dest: './temp' })
 
 router.get('/pipeline/:id', getPipeline)
 router.get('/pipelines', getPipelines)
@@ -25,5 +28,6 @@ router.delete('/pipeline/:id', deletePipeline)
 router.get('/run/:id', getRun)
 router.get('/pipeline/:id/runs', getRuns)
 
+router.post('/pipeline/:id/dataset-and-artifacts/upload', uploadMulter.any(), upload)
 
 export default router

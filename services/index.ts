@@ -12,3 +12,7 @@ export {
   fetchRun,
   fetchRuns
 } from './run.service'
+
+export {
+  uploadData
+} from './datasets-and-artifacts.service'

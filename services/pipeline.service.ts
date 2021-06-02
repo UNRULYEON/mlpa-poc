@@ -1,7 +1,6 @@
 import { DTO_CreatePipeline } from "DTO/pipeline"
-import { LocalWorkspace } from "@pulumi/pulumi/automation"
 import { pipeline, pipelines, createPipelineInDb, pipelineStatus, configurationStatus, removePipeline } from "../db"
-import { azure_createBucket, azure_getBucket } from './azure.service'
+import { azure_createBucket, azure_createResourceGroup, azure_getBucket } from './azure.service'
 import { gc_createBucket, gc_getBucket } from './gc.service'
 
 export const fetchPipeline = async (id: number) => {
@@ -24,20 +23,12 @@ export const createPipeline = async (data: DTO_CreatePipeline) => {
   try {
 
     const pipeline = await createPipelineInDb(data)
-
-    let project_stack = await LocalWorkspace.createOrSelectStack({
-      stackName: `${data.name}-bucket`,
-      projectName: data.project,
-      program: async () => {
-        if (data.platform === 'GOOGLE') {
-          gc_createBucket({ name: data.name, project_id: data.project_id })
-        } else if (data.platform === 'AZURE') {
-          azure_createBucket({ name: data.name, project: data.project })
-        }
-      }
-    })
-
-    await project_stack.up({ onOutput: console.log })
+    if (data.platform === 'GOOGLE') {
+      await gc_createBucket({ name: data.name, project_id: data.project_id })
+    } else if (data.platform === 'AZURE') {
+      await azure_createResourceGroup({ name: data.name, project: data.project })
+      await azure_createBucket({ name: data.name, project: data.project })
+    }
 
     return pipeline
   } catch (e) {
@@ -65,21 +56,15 @@ export const fetchPipelineArtifactsBucketStatus = async (id: number) => {
   try {
     const p = await pipeline(id)
 
-    let project_stack = await LocalWorkspace.createOrSelectStack({
-      stackName: `${p.name}-bucket`,
-      projectName: p.project,
-      program: async () => {
-        if (p.platform === 'GOOGLE') {
-          return gc_getBucket({ name: p.name, project_id: p.project_id })
-        } else if (p.platform === 'AZURE') {
-          return azure_getBucket({ name: p.name, project: p.project })
-        }
-      }
-    })
+    let bucket_url = ''
 
-    const stack = await project_stack.up({ onOutput: console.log })
+    if (p.platform === 'GOOGLE') {
+      bucket_url = await gc_getBucket({ name: p.name, project_id: p.project_id })
+    } else if (p.platform === 'AZURE') {
+      bucket_url = await azure_getBucket({ name: p.name, project: p.project })
+    }
 
-    return { deployed: true, endpoint: stack.outputs.bucket_url.value }
+    return { deployed: bucket_url.length > 0 ? true : false, endpoint: bucket_url }
   } catch (e) {
     throw new Error(e)
   }

@@ -16,3 +16,7 @@ export {
   getRun,
   getRuns
 } from './run.controller'
+
+export {
+  upload
+} from './datasets-and-artifacts.controller'
