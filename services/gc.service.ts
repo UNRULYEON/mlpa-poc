@@ -48,6 +48,7 @@ export const gc_getBucketFiles = async (name: string) => {
 
     return ({
       name: file.name,
+      url: file.publicUrl(),
       download_id: file.name,
       content_type: file.metadata.contentType as string,
       size: file.metadata.size as string

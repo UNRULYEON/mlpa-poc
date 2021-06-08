@@ -6,6 +6,7 @@ export type fileType = {
 
 export type DTO_PipelineDatasetsAndArtifactsFile = {
   name: string
+  url: string
   download_id: string
   content_type: string
   size: string
