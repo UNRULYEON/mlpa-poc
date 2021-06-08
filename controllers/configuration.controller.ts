@@ -2,10 +2,15 @@ import { RouteFunction } from './'
 import { fetchPipelineConfiguration, createNewPipelineConfiguration, updateExistingPipelineConfiguration } from '../services'
 import { DTO_PipelineConfiguration } from '../DTO/configuration'
 
-const defaultConfig = `import pickle
+const defaultConfig = `from pandas import read_csv
+import pickle
 
 # S1 - Data ingestion
+# EXAMPLE: Ingest CSV
+url = "URL"
 
+names = ["COLUMN_NAME_1", "COLUMN_NAME_2"]
+dataset = read_csv(url, names=names)
 
 # S2 - Data validation
 

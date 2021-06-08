@@ -86,7 +86,7 @@ export const azure_getBucketFiles = async (name: string) => {
   for await (const blob of containerClient.listBlobsFlat()) {
     files.push({
       name: blob.name,
-      url: `${bsc.url}/artifacts/${blob.name}`,
+      url: `${bsc.url}artifacts/${blob.name}`,
       download_id: blob.name,
       content_type: blob.properties.contentType,
       size: blob.properties.contentLength.toString()
