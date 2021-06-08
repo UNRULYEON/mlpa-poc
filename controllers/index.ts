@@ -20,3 +20,8 @@ export {
 export {
   upload
 } from './datasets-and-artifacts.controller'
+
+export {
+  getPipelineConfiguration,
+  savePipelineConfiguration,
+} from './configuration.controller'

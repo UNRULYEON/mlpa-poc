@@ -16,3 +16,9 @@ export {
 export {
   uploadData
 } from './datasets-and-artifacts.service'
+
+export {
+  fetchPipelineConfiguration,
+  createNewPipelineConfiguration,
+  updateExistingPipelineConfiguration
+} from './configuration.service'

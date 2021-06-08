@@ -11,7 +11,10 @@ export {
 } from './pipeline.db'
 
 export {
-  configurationStatus
+  configurationStatus,
+  currentPipelineConfiguration,
+  createPipelineConfiguration,
+  updatePipelineConfiguration
 } from './configuration.db'
 
 export {

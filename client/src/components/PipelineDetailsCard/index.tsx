@@ -7,7 +7,8 @@ import Button from '../Button'
 import {
 	DTO_PipelineStatus,
 	PipelineStatus,
-	Platform
+	Platform,
+	DTO_PipelineConfigurationStatus
 } from '../../../../DTO/pipeline'
 
 type PipelineDetailsCardProps = {
@@ -17,6 +18,9 @@ type PipelineDetailsCardProps = {
 const PipelineDetailsCard = (props: PipelineDetailsCardProps) => {
 	const { id } = props
 	const { data } = useSWR<DTO_PipelineStatus>(`/api/pipeline/${id}/status`)
+	const { data: configStatus } = useSWR<DTO_PipelineConfigurationStatus>(
+		`/api/pipeline/${id}/config/status`
+	)
 
 	const getPipelineStatusColor = (status: PipelineStatus) => {
 		switch (status) {
@@ -48,9 +52,16 @@ const PipelineDetailsCard = (props: PipelineDetailsCardProps) => {
 				status={!data ? 'gray' : getPipelineStatusColor(data.status)}
 				title='Pipeline'
 				buttons={() => (
-					<Button variant='outlined' disabled>
-						Start
-					</Button>
+					<>
+						{configStatus && (
+							<Button
+								variant='outlined'
+								disabled={configStatus.status === 'INVALID'}
+							>
+								Start
+							</Button>
+						)}
+					</>
 				)}
 			/>
 			{!data ? (

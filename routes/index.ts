@@ -12,6 +12,8 @@ import {
   getRun,
   getRuns,
   upload,
+  getPipelineConfiguration,
+  savePipelineConfiguration,
 } from '../controllers'
 
 const router = express.Router()
@@ -29,5 +31,8 @@ router.get('/run/:id', getRun)
 router.get('/pipeline/:id/runs', getRuns)
 
 router.post('/pipeline/:id/dataset-and-artifacts/upload', uploadMulter.any(), upload)
+
+router.get('/pipeline/:id/configuration', getPipelineConfiguration)
+router.post('/pipeline/:id/configuration', savePipelineConfiguration)
 
 export default router
