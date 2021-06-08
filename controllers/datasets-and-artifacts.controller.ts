@@ -1,6 +1,8 @@
 import { RouteFunction } from './'
 import {
-  uploadData
+  uploadData,
+  fetchBucketFiles,
+  fetchFile
 } from '../services'
 import { fileType } from 'DTO/datasets-and-artifacts'
 
@@ -31,6 +33,31 @@ export const upload: RouteFunction = async (req, res, next) => {
     await uploadData(id, payload)
 
     return res.status(200).json({})
+  } catch (e) {
+    return res.status(500).json(e)
+  }
+}
+
+export const getBucketFiles: RouteFunction = async (req, res) => {
+  const id = Number(req.params.id)
+
+  try {
+    const files = await fetchBucketFiles(id)
+
+    return res.status(200).json(files)
+  } catch (e) {
+    return res.status(500).json(e)
+  }
+}
+
+export const getFile: RouteFunction = async (req, res) => {
+  const id = Number(req.params.id)
+  const filename = req.params.filename
+
+  try {
+    const file = await fetchFile(id, filename)
+
+    return res.set('Content-disposition', `attachment; filename=${filename}`).type(file.content_type).send(file.buffer)
   } catch (e) {
     return res.status(500).json(e)
   }

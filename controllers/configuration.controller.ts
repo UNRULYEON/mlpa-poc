@@ -44,9 +44,6 @@ export const savePipelineConfiguration: RouteFunction = async (req, res, next) =
   const id = Number(req.params.id)
   const data: DTO_PipelineConfiguration = req.body
 
-  console.log(id)
-  console.log(data)
-
   try {
     let pipelineConfiguration = await fetchPipelineConfiguration(id)
 

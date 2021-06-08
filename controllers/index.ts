@@ -18,7 +18,9 @@ export {
 } from './run.controller'
 
 export {
-  upload
+  upload,
+  getBucketFiles,
+  getFile
 } from './datasets-and-artifacts.controller'
 
 export {

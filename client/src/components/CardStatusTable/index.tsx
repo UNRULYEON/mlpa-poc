@@ -1,4 +1,4 @@
-import Box from '@material-ui/core/Box'
+import Box, { BoxProps } from '@material-ui/core/Box'
 
 type StatusTable = {
 	head: string
@@ -10,11 +10,11 @@ type CardStatusTableProps = {
 	headWidth?: string
 }
 
-const CardStatusTable = (props: CardStatusTableProps) => {
+const CardStatusTable = (props: CardStatusTableProps & BoxProps) => {
 	const { table, headWidth } = props
 
 	return (
-		<Box fontSize='16px'>
+		<Box fontSize='16px' {...props}>
 			<table>
 				<tbody>
 					{table.map((row, key) => (

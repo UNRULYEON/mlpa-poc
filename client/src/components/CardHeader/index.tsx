@@ -1,4 +1,4 @@
-import Box from '@material-ui/core/Box'
+import Box, { BoxProps } from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 
 type CardHeaderProps = {
@@ -7,11 +7,11 @@ type CardHeaderProps = {
 	buttons?: () => JSX.Element
 }
 
-const CardHeader = (props: CardHeaderProps) => {
+const CardHeader = (props: CardHeaderProps & BoxProps) => {
 	const { status, title, buttons } = props
 
 	return (
-		<Box mb='12px'>
+		<Box mb='12px' {...props}>
 			<Grid container direction='row' alignItems='center'>
 				<Grid item xs>
 					{status && (

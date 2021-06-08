@@ -1,16 +1,15 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "baseUrl": "./",
-    "outDir": "build",
-    "target": "ES6",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "lib": ["ES6"],
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": [
-    "**.ts"
-  ]
+	"compilerOptions": {
+		"module": "commonjs",
+		"baseUrl": "./",
+		"outDir": "build",
+		"target": "ES6",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"lib": ["ES6"],
+		"allowJs": true,
+		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["**.ts"]
 }

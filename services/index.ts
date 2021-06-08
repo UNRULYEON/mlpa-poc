@@ -14,7 +14,9 @@ export {
 } from './run.service'
 
 export {
-  uploadData
+  uploadData,
+  fetchBucketFiles,
+  fetchFile
 } from './datasets-and-artifacts.service'
 
 export {

@@ -3,7 +3,7 @@ import { ResourceManagementClient } from '@azure/arm-resources'
 import { StorageManagementClient } from '@azure/arm-storage'
 import { setLogLevel } from '@azure/logger'
 import { BlobServiceClient } from '@azure/storage-blob'
-import { fileType } from '../DTO/datasets-and-artifacts'
+import { DTO_PipelineDatasetsAndArtifactsFile, fileType } from '../DTO/datasets-and-artifacts'
 import { config } from 'dotenv'
 import fs from 'fs'
 
@@ -68,8 +68,39 @@ export const azure_uploadToBucket = async (data: { name: string, project: string
   files.map(async file => {
     const data = fs.readFileSync(file.path)
     const blockBlobClient = containerClient.getBlockBlobClient(file.name)
-    const uploadBlobResponse = await blockBlobClient.upload(data, data.length, {})
+    const uploadBlobResponse = await blockBlobClient.upload(data, data.length, {
+      blobHTTPHeaders: { blobContentType: file.type }
+    })
 
     console.log('done uploading')
   })
+}
+
+export const azure_getBucketFiles = async (name: string) => {
+  const bsc = new BlobServiceClient(`https://${createStorageAccountName(name)}.blob.core.windows.net/`, credentials)
+
+  const containerClient = bsc.getContainerClient('artifacts');
+
+  const files: DTO_PipelineDatasetsAndArtifactsFile[] = []
+
+  for await (const blob of containerClient.listBlobsFlat()) {
+    files.push({
+      name: blob.name,
+      download_id: blob.name,
+      content_type: blob.properties.contentType,
+      size: blob.properties.contentLength.toString()
+    })
+  }
+
+  return files
+}
+
+export const azure_downloadFile = async (name: string, file_name: string) => {
+  const bsc = new BlobServiceClient(`https://${createStorageAccountName(name)}.blob.core.windows.net/`, credentials)
+  const containerClient = bsc.getContainerClient('artifacts');
+  const bbc = containerClient.getBlockBlobClient(file_name)
+
+  const file = await bbc.downloadToBuffer()
+
+  return { buffer: file, content_type: (await bbc.getProperties()).contentType }
 }
