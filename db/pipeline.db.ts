@@ -1,6 +1,7 @@
-import { Prisma } from '@prisma/client'
+import { Pipeline, Prisma } from '@prisma/client'
 import { prisma } from './'
 import { DTO_CreatePipeline } from '../DTO/pipeline'
+import { ListPrivateCloudAdminCredentialsArgs } from '@pulumi/azure-native/avs'
 
 export const pipeline = async (id: number) => {
   return await prisma.pipeline.findUnique({
@@ -54,5 +55,14 @@ export const removePipeline = async (id: number) => {
     where: {
       id: id
     }
+  })
+}
+
+export const updatePipeline = async (id: number, data: Partial<Pipeline>) => {
+  return await prisma.pipeline.update({
+    where: {
+      id: id
+    },
+    data: data
   })
 }

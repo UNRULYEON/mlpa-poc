@@ -9,7 +9,11 @@ export {
   getPipelineStatus,
   getPipelineConfigurationStatus,
   getPipelineDatasetAndArtifactsStatus,
-  deletePipeline
+  deletePipeline,
+  startPipeline,
+  // getSerialPortOutput
+  getRunUpdate,
+  stopPipelineRun
 } from './pipeline.controller'
 
 export {

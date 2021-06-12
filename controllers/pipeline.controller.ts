@@ -7,7 +7,12 @@ import {
   fetchPipelineStatus,
   fetchPipelineConfigurationStatus,
   fetchPipelineArtifactsBucketStatus,
-  deletePipelineInDb
+  deletePipelineInDb,
+  runPipeline,
+  fetchRunStatus,
+  fetchRun,
+  stopRun,
+  // fetchSerialOutput
 } from '../services'
 
 export const getPipeline: RouteFunction = async (req, res, next) => {
@@ -100,3 +105,60 @@ export const deletePipeline: RouteFunction = async (req, res) => {
     return res.status(500).json(e)
   }
 }
+
+export const startPipeline: RouteFunction = async (req, res) => {
+  const id = Number(req.params.id)
+
+  try {
+    const p = await fetchPipeline(id)
+
+    const run_id = await runPipeline(p.id)
+
+    return res.status(200).json(run_id)
+  } catch (e) {
+    return res.status(500).json(e)
+  }
+}
+
+
+export const getRunUpdate: RouteFunction = async (req, res) => {
+  const id = Number(req.params.id)
+
+  try {
+    const r = await fetchRun(id)
+
+    const status = await fetchRunStatus(r.id)
+
+    return res.status(200).json(status)
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json(e)
+  }
+}
+
+export const stopPipelineRun: RouteFunction = async (req, res) => {
+  const id = Number(req.params.id)
+
+  try {
+    await stopRun(id)
+    return res.status(200).json()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json(e)
+  }
+}
+
+// export const getSerialPortOutput: RouteFunction = async (req, res) => {
+//   const id = Number(req.params.id)
+
+//   try {
+//     const p = await fetchPipeline(id)
+
+//     let output = await fetchSerialOutput(p.id)
+
+//     return res.status(200).json(output)
+//   } catch (e) {
+//     return res.status(500).json(e)
+//   }
+// }
+

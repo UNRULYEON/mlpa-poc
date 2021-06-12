@@ -1,9 +1,18 @@
 import express from "express"
 import path from "path"
 import routes from './routes'
+import { Worker } from 'worker_threads'
 
 const app = express();
 const port = process.env.PORT || 8000
+
+// const worker = new Worker('./pipeline-worker.js', { workerData: [] })
+
+// worker.once("online", () => console.log('[WORKER] Pipeline worker is online'))
+
+// worker.postMessage('ping')
+
+// worker.once("message", message => console.log(message))
 
 app.use(express.json())
 

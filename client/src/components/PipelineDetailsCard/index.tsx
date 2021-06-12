@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import CardContainer from '../CardContainer'
 import CardHeader from '../CardHeader'
@@ -46,6 +46,14 @@ const PipelineDetailsCard = (props: PipelineDetailsCardProps) => {
 		}
 	}
 
+	const startPipeline = () => {
+		fetch(`/api/pipeline/${id}/start`).then(r => {
+			if (r.ok) {
+				mutate(`/api/pipeline/${id}/status`)
+			}
+		})
+	}
+
 	return (
 		<CardContainer>
 			<CardHeader
@@ -56,6 +64,7 @@ const PipelineDetailsCard = (props: PipelineDetailsCardProps) => {
 						{configStatus && (
 							<Button
 								variant='outlined'
+								onClick={() => startPipeline()}
 								disabled={configStatus.status === 'INVALID'}
 							>
 								Start
@@ -78,10 +87,6 @@ const PipelineDetailsCard = (props: PipelineDetailsCardProps) => {
 									{data.status.charAt(0) + data.status.slice(1).toLowerCase()}
 								</>
 							)
-						},
-						{
-							head: 'Last run:',
-							data: <>{data.Run.length > 0 ? 'there is a run' : 'No runs'}</>
 						},
 						{
 							head: 'Platform:',

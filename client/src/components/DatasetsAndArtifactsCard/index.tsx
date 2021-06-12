@@ -136,46 +136,48 @@ const DatasetsAndArtifactsCard = (props: DatasetsAndArtifactsCardProps) => {
 			) : !data_files ? (
 				<></>
 			) : (
-				<Table aria-label='simple table'>
-					<TableHead>
-						<TableRow>
-							<TableCell>Name</TableCell>
-							<TableCell>Size</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{data_files.length <= 0 ? (
+				<div style={{ maxHeight: '750px', overflowY: 'auto' }}>
+					<Table aria-label='simple table'>
+						<TableHead>
 							<TableRow>
-								<TableCell component='th' colSpan={2}>
-									There are no datasets or artifacts. Upload a dataset.
-								</TableCell>
+								<TableCell>Name</TableCell>
+								<TableCell>Size</TableCell>
 							</TableRow>
-						) : (
-							<>
-								{data_files.map((file, key) => (
-									<TableRow
-										hover
-										onClick={() => {
-											window.open(
-												`http://localhost:8000/api/pipeline/${id}/dataset-and-artifacts/file/${file.download_id}`,
-												'_blank'
-											)
-										}}
-										style={{ cursor: 'pointer' }}
-										key={`${key}-${file.name}`}
-									>
-										<TableCell component='th' scope='Name'>
-											{file.name}
-										</TableCell>
-										<TableCell component='th' scope='Size'>
-											{convertBytes(file.size)}
-										</TableCell>
-									</TableRow>
-								))}
-							</>
-						)}
-					</TableBody>
-				</Table>
+						</TableHead>
+						<TableBody>
+							{data_files.length <= 0 ? (
+								<TableRow>
+									<TableCell component='th' colSpan={2}>
+										There are no datasets or artifacts. Upload a dataset.
+									</TableCell>
+								</TableRow>
+							) : (
+								<>
+									{data_files.map((file, key) => (
+										<TableRow
+											hover
+											onClick={() => {
+												window.open(
+													`http://localhost:8000/api/pipeline/${id}/dataset-and-artifacts/file/${file.download_id}`,
+													'_blank'
+												)
+											}}
+											style={{ cursor: 'pointer' }}
+											key={`${key}-${file.name}`}
+										>
+											<TableCell component='th' scope='Name'>
+												{file.name}
+											</TableCell>
+											<TableCell component='th' scope='Size'>
+												{convertBytes(file.size)}
+											</TableCell>
+										</TableRow>
+									))}
+								</>
+							)}
+						</TableBody>
+					</Table>
+				</div>
 			)}
 		</CardContainer>
 	)

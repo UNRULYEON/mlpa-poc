@@ -15,7 +15,11 @@ import {
   getPipelineConfiguration,
   savePipelineConfiguration,
   getBucketFiles,
-  getFile
+  getFile,
+  startPipeline,
+  // getSerialPortOutput
+  getRunUpdate,
+  stopPipelineRun
 } from '../controllers'
 
 const router = express.Router()
@@ -26,9 +30,12 @@ router.get('/pipelines', getPipelines)
 router.post('/pipeline', postPipeline)
 router.get('/pipeline/:id/status', getPipelineStatus)
 router.delete('/pipeline/:id', deletePipeline)
+router.get('/pipeline/:id/start', startPipeline)
 
 router.get('/run/:id', getRun)
 router.get('/pipeline/:id/runs', getRuns)
+router.get('/pipeline/:id/update', getRunUpdate)
+router.get('/pipeline/:id/terminate', stopPipelineRun)
 
 router.get('/pipeline/:id/dataset-and-artifacts/status', getPipelineDatasetAndArtifactsStatus)
 router.post('/pipeline/:id/dataset-and-artifacts/upload', uploadMulter.any(), upload)

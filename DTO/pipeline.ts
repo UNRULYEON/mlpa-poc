@@ -15,7 +15,7 @@ export type DTO_PipelineDetails = {
 
 export type DTO_PipelineStatus = {
   status: PipelineStatus
-  Run: []
+  Run: { id: number, date: string }[]
   platform: Platform
 }
 
@@ -29,7 +29,7 @@ export type DTO_PipelineDatasetsAndArtifactsStatus = {
   endpoint: string
 }
 
-export type Platform = 'AZURE' | 'GOOGLE'
+export type Platform = 'AZURE' | 'GOOGLE' | 'AWS'
 
 export type PipelineStatus = 'IDLE' | 'RUNNING' | 'ERROR'
 

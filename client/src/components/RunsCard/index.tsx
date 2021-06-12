@@ -1,14 +1,13 @@
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import { useHistory } from 'react-router-dom'
 import CardContainer from '../CardContainer'
 import CardHeader from '../CardHeader'
 import Box from '@material-ui/core/Box'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import Switch from '@material-ui/core/Switch'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { Runs } from '../../../../DTO/run'
+import { DTO_PipelineStatus } from '../../../../DTO/pipeline'
+import { useEffect, useRef, useState } from 'react'
 
 type RunsCardProps = {
 	id: string
@@ -18,6 +17,41 @@ const RunsCard = (props: RunsCardProps) => {
 	let history = useHistory()
 	const { id } = props
 	const { data, error } = useSWR<Runs>(`/api/pipeline/${id}/runs`)
+	const { data: data_pipelineStatus, error: error_pipelineStatus } =
+		useSWR<DTO_PipelineStatus>(`/api/pipeline/${id}/status`)
+	const { data: data_runOutput, error: error_runOutput } = useSWR<string>(
+		data_pipelineStatus && data_pipelineStatus.status === 'RUNNING'
+			? `/api/pipeline/${data_pipelineStatus.Run[0].id}/update`
+			: null
+	)
+
+	const outputDiv = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		if (data_pipelineStatus) {
+			const fetchoutput = async () => {
+				while (data_pipelineStatus?.status === 'RUNNING') {
+					await new Promise(r => setTimeout(r, 5000))
+					mutate(`/api/pipeline/${data_pipelineStatus.Run[0].id}/update`).then(
+						output => {
+							if (output?.includes('[MLPA] - DONE')) {
+								console.log('DELETE INSTANCE!')
+								fetch(
+									`/api/pipeline/${data_pipelineStatus.Run[0].id}/terminate`
+								).then(() => mutate(`/api/pipeline/${id}/status`))
+							}
+							if (outputDiv.current) {
+								outputDiv.current.scrollIntoView({ behavior: 'smooth' })
+							}
+						}
+					)
+					mutate(`/api/pipeline/${id}/dataset-and-artifacts/files`)
+				}
+			}
+
+			fetchoutput()
+		}
+	}, [data_pipelineStatus])
 
 	const getRunStatusColor = (status: 'RUNNING' | 'SUCCESS' | 'FAILED') => {
 		switch (status) {
@@ -33,63 +67,30 @@ const RunsCard = (props: RunsCardProps) => {
 	}
 
 	return (
-		<CardContainer px={0}>
-			<Box px={2}>
-				<CardHeader title='Runs' />
+		<CardContainer>
+			<Box>
+				<CardHeader title='Run' />
 			</Box>
 			{error ? (
 				<>err</>
 			) : !data ? (
 				<>loading</>
 			) : (
-				<Table aria-label='simple table'>
-					<TableHead>
-						<TableRow>
-							<TableCell width={10}>Status</TableCell>
-							<TableCell>Name</TableCell>
-							<TableCell>Date</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{data.length <= 0 ? (
-							<TableRow>
-								<TableCell component='th' colSpan={3}>
-									There are no runs. Start the pipeline to create a run.
-								</TableCell>
-							</TableRow>
-						) : (
-							<>
-								{data.map((run, key) => (
-									<TableRow
-										hover
-										onClick={() =>
-											history.push(`/pipeline/${id}/run/${run.id}`)
-										}
-										style={{ cursor: 'pointer' }}
-										key={`${key}-${run.name}`}
-									>
-										<TableCell component='th' scope='Status'>
-											<Box
-												width='15px'
-												height='15px'
-												bgcolor={getRunStatusColor(run.status)}
-												borderRadius='50%'
-												display='inline-block'
-												mr='12px'
-											/>
-										</TableCell>
-										<TableCell component='th' scope='Name'>
-											{run.name}
-										</TableCell>
-										<TableCell component='th' scope='Date'>
-											{new Date(run.date).toLocaleString()}
-										</TableCell>
-									</TableRow>
-								))}
-							</>
-						)}
-					</TableBody>
-				</Table>
+				<>
+					{data_runOutput && (
+						<div
+							style={{
+								wordBreak: 'break-word',
+								whiteSpace: 'pre-wrap',
+								overflow: 'auto',
+								maxHeight: '642px'
+							}}
+						>
+							{data_runOutput}
+							<div ref={outputDiv}></div>
+						</div>
+					)}
+				</>
 			)}
 		</CardContainer>
 	)

@@ -23,7 +23,7 @@ const PipelineDetailsPage = () => {
 			) : (
 				<>
 					<Header backUrl='/' title={data.name} subtitle={data.project} />
-					<Grid container spacing={3}>
+					<Grid container spacing={3} style={{ maxHeight: '93%' }}>
 						<Grid item xs={8}>
 							<Grid container direction='row' spacing={3}>
 								<Grid item xs>

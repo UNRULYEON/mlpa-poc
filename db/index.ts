@@ -7,7 +7,8 @@ export {
   pipelines,
   createPipelineInDb,
   pipelineStatus,
-  removePipeline
+  removePipeline,
+  updatePipeline
 } from './pipeline.db'
 
 export {
@@ -19,5 +20,7 @@ export {
 
 export {
   run,
-  runs
+  runs,
+  newRun,
+  updateRun
 } from './run.db'

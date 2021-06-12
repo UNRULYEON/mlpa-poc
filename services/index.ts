@@ -5,7 +5,11 @@ export {
   fetchPipelineStatus,
   fetchPipelineConfigurationStatus,
   fetchPipelineArtifactsBucketStatus,
-  deletePipelineInDb
+  deletePipelineInDb,
+  runPipeline,
+  // fetchSerialOutput,
+  fetchRunStatus,
+  stopRun
 } from './pipeline.service'
 
 export {

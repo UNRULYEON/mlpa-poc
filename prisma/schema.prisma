@@ -17,6 +17,7 @@ model Pipeline {
   status     PipelineStatus @default(IDLE)
   platform   Platform
   project_id String
+  run        Int            @default(0)
 
   configurations PipelineConfiguration[]
   Run            Run[]
@@ -71,9 +72,11 @@ model RunArtifacts {
 }
 
 enum RunStatus {
+  PROVISIONING
+  STAGING
   RUNNING
-  SUCCESS
-  FAILED
+  STOPPING
+  TERMINATED
 }
 
 enum Platform {
