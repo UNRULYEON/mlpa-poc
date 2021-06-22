@@ -135,7 +135,6 @@ cd output
 for FILE in *; do sudo mv $FILE "$HOSTNAME-$FILE"; done
 for FILE in *; do gsutil cp $FILE gs://test-pipeline-artifacts; done
 
-echo
 echo '[MLPA] - DONE'
 `,
         }
@@ -153,12 +152,6 @@ echo '[MLPA] - DONE'
 
   console.log(`Polling operation ${operation.id}...`);
   await operation.promise()
-
-  console.log('Acquiring VM metadata...');
-  const [metadata] = await vm.getMetadata()
-
-  const ip = metadata.networkInterfaces[0].accessConfigs[0].natIP
-  console.log(`Booting new VM with IP http://${ip}...`);
 
   return { run_id: _run.id }
 }
@@ -184,7 +177,6 @@ export const gc_stopRun = async (name: string, run: number, run_id: number) => {
   await vm.delete()
 
   const _run = await fetchRun(run_id)
-
 
   await updateRun(run_id, { status: 'TERMINATED' })
   await updatePipeline(_run.pipeline.id, { status: 'IDLE' })
