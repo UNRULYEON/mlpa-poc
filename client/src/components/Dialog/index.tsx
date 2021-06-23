@@ -72,7 +72,7 @@ type DialogProps = {
 } & MuiDialogProps
 
 const Dialog: React.FC<DialogProps> = props => {
-	const { title, buttons, close, children } = props
+	const { title, buttons, close, children, ...rest } = props
 
 	const handleClose = () => close()
 
@@ -81,7 +81,9 @@ const Dialog: React.FC<DialogProps> = props => {
 			<DialogTitle id='dialog-title' onClose={handleClose}>
 				{title}
 			</DialogTitle>
-			<DialogContent dividers>{children}</DialogContent>
+			<DialogContent dividers id='dialog-content'>
+				{children}
+			</DialogContent>
 			<DialogActions>{buttons()}</DialogActions>
 		</MuiDialog>
 	)

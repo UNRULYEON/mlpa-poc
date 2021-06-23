@@ -70,6 +70,10 @@ const PipelinesPage = () => {
 			.finally(() => setCreatingPipeline(false))
 	}
 
+	if (!data) {
+		return <span id='pipelines-loading'>loading...</span>
+	}
+
 	return (
 		<>
 			<Header
@@ -164,13 +168,15 @@ const PipelinesPage = () => {
 					)}
 				</Grid>
 			</Dialog>
-			<CardContainer px={0}>
+			<CardContainer px={0} id='pipeline-card'>
 				{error ? (
-					<>err</>
+					<span id='pipelines-error'>
+						There was a problem retrieving the data. Please try again.
+					</span>
 				) : !data ? (
-					<>loading</>
+					<span id='pipelines-loading'>Loading pipelines...</span>
 				) : (
-					<Table aria-label='simple table'>
+					<Table aria-label='simple table' id='pipeline-table'>
 						<TableHead>
 							<TableRow>
 								<TableCell>Name</TableCell>
@@ -179,7 +185,7 @@ const PipelinesPage = () => {
 						<TableBody>
 							{data.length <= 0 ? (
 								<TableRow>
-									<TableCell component='th' scope='Name'>
+									<TableCell component='th' scope='Name' id='no-pipelines'>
 										There are no pipeline. Create a new one.
 									</TableCell>
 								</TableRow>

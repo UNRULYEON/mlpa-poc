@@ -55,7 +55,7 @@ const PipelineDetailsCard = (props: PipelineDetailsCardProps) => {
 	}
 
 	return (
-		<CardContainer>
+		<CardContainer id='pipeline-details-card'>
 			<CardHeader
 				status={!data ? 'gray' : getPipelineStatusColor(data.status)}
 				title='Pipeline'

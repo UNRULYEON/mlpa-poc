@@ -7,6 +7,7 @@ import './App.css'
 function App() {
 	return (
 		<Box component='main' p={'24px'} height={'-webkit-fill-available'}>
+			test
 			<Router>
 				<Switch>
 					<Route path='/pipeline/:pipeline/run/:run'>

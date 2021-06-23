@@ -22,6 +22,7 @@ const CardHeader = (props: CardHeaderProps & BoxProps) => {
 							borderRadius='50%'
 							display='inline-block'
 							mr='12px'
+							className='card-header-status'
 						/>
 					)}
 					<Box
